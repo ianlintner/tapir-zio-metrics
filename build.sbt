@@ -6,7 +6,6 @@ lazy val root = (project in file("."))
   .settings(
     name := "tapir-zio-metrics"
   )
-val zioInteropCats = "22.0.0.0"
 val zio2 =  "2.0.3"
 val tapir = "1.2.0"
 val scalaTest = "3.2.14"
