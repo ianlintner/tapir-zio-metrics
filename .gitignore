@@ -1,5 +1,14 @@
-.idea
 *.class
 *.log
 *.jar
 target
+.cache
+.history
+.lib/
+dist/*
+target/
+.bloop
+.metals
+.bsp
+.idea*
+.java-version
