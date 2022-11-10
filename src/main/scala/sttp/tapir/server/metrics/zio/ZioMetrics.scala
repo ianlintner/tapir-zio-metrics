@@ -92,21 +92,21 @@ object ZioMetrics {
             .onEndpointRequest { ep =>
               m.eval {
                 unsafeRun(
-                  counter.tagged(asZioLabel(labels, ep, req)).update(1)
+                  counter.tagged(asZioLabel(labels, ep, req)).update(1).unit
                 )
               }
             }
             .onResponseBody { (ep, _) =>
               m.eval {
                 unsafeRun(
-                  counter.tagged(asZioLabel(labels, ep, req)).update(-1)
+                  counter.tagged(asZioLabel(labels, ep, req)).update(-1).unit
                 )
               }
             }
             .onException { (ep, ex) =>
               m.eval {
                 unsafeRun(
-                  counter.tagged(asZioLabel(labels, ep, req)).update(-1)
+                  counter.tagged(asZioLabel(labels, ep, req)).update(-1).unit
                 )
               }
             }
@@ -124,14 +124,14 @@ object ZioMetrics {
             .onResponseBody { (ep, res) =>
               m.eval {
                 unsafeRun(
-                  counter.tagged(asZioLabel(labels, ep, req) ++ asZioLabel(labels, Right(res), None)).update(1)
+                  counter.tagged(asZioLabel(labels, ep, req) ++ asZioLabel(labels, Right(res), None)).update(1).unit
                 )
               }
             }
             .onException { (ep, ex) =>
               m.eval {
                 unsafeRun(
-                  counter.tagged(asZioLabel(labels, ep, req) ++ asZioLabel(labels, Left(ex), None)).update(1)
+                  counter.tagged(asZioLabel(labels, ep, req) ++ asZioLabel(labels, Left(ex), None)).update(1).unit
                 )
               }
             }
@@ -154,21 +154,21 @@ object ZioMetrics {
             .onResponseHeaders { (ep, res) =>
               m.eval {
                 unsafeRun(
-                  histogram.tagged(asZioLabel(labels, ep, req) ++ asZioLabel(labels, Right(res), Some(labels.forResponsePhase.headersValue))).update(duration)
+                  histogram.tagged(asZioLabel(labels, ep, req) ++ asZioLabel(labels, Right(res), Some(labels.forResponsePhase.headersValue))).update(duration).unit
                 )
               }
             }
             .onResponseBody { (ep, res) =>
               m.eval {
                 unsafeRun(
-                  histogram.tagged(asZioLabel(labels, ep, req) ++ asZioLabel(labels, Right(res), Some(labels.forResponsePhase.bodyValue))).update(duration)
+                  histogram.tagged(asZioLabel(labels, ep, req) ++ asZioLabel(labels, Right(res), Some(labels.forResponsePhase.bodyValue))).update(duration).unit
                 )
               }
             }
             .onException { (ep: AnyEndpoint, ex: Throwable) =>
               m.eval {
                 unsafeRun(
-                  histogram.tagged(asZioLabel(labels, ep, req) ++ asZioLabel(labels, Left(ex), None)).update(duration)
+                  histogram.tagged(asZioLabel(labels, ep, req) ++ asZioLabel(labels, Left(ex), None)).update(duration).unit
                 )
               }
             }
