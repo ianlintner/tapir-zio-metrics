@@ -16,7 +16,8 @@ libraryDependencies ++= Seq(
   "com.softwaremill.sttp.tapir" %% "tapir-server" % tapir,
   "com.softwaremill.sttp.tapir" %% "tapir-tests" % tapir % Test,
   "com.softwaremill.sttp.tapir" %% "tapir-server-tests" % tapir % Test,
-  "dev.zio" %% "zio-test" % zio2 % Test,
-  "dev.zio" %% "zio-test-sbt" % zio2 % Test,
-
+  "dev.zio" %% "zio-test"          % zio2 % Test,
+  "dev.zio" %% "zio-test-sbt"      % zio2 % Test,
+  "dev.zio" %% "zio-test-magnolia" % zio2 % Test
 )
+testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")

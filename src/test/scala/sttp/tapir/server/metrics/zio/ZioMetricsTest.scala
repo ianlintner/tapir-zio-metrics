@@ -40,7 +40,7 @@ object ZioMetricsTest extends ZIOSpecDefault {
           _ <- ZIO.succeed({
             interpreter.apply(PersonsApi.request("Jacob"))
           }).fork
-          _ <- ZIO.succeed(Thread.sleep(75))
+          _ <- ZIO.succeed(Thread.sleep(100))
           state <- active.value
           _ <- ZIO.succeed(Thread.sleep(100))
           state2 <- active.value
