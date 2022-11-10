@@ -9,7 +9,7 @@ import zio.metrics.Metric.Counter
 import zio.metrics.MetricKeyType.Gauge
 import zio.metrics.{Metric, MetricKeyType, MetricLabel, MetricState}
 import zio.test.{ZIOSpecDefault, _}
-import zio.{Runtime, Task, Unsafe, ZIO}
+import zio.{Runtime, Schedule, Task, Unsafe, ZIO}
 
 object ZioMetricsTest extends ZIOSpecDefault {
 
@@ -18,7 +18,7 @@ object ZioMetricsTest extends ZIOSpecDefault {
       test("can collect requests active") {
 
         val serverEp = PersonsApi { name =>
-          Thread.sleep(50)
+          Thread.sleep(100)
           PersonsApi.defaultLogic(name)
         }.serverEp
         val metrics = ZioMetrics[Id](ZioMetrics.DEFAULT_NAMESPACE).addRequestsActive()
@@ -42,11 +42,11 @@ object ZioMetricsTest extends ZIOSpecDefault {
           }).fork
           _ <- ZIO.succeed(Thread.sleep(100))
           state <- active.value
-          _ <- ZIO.succeed(Thread.sleep(100))
+          _ <- ZIO.succeed(Thread.sleep(150))
           state2 <- active.value
         } yield assertTrue(state == MetricState.Counter(1)) && assertTrue(state2 == MetricState.Counter(0))
 
-      },
+      } @@ TestAspect.retry(Schedule.recurs(5)),
       test("can collect requests total") {
 
         val serverEp = PersonsApi { name =>
